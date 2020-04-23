@@ -12,15 +12,15 @@ def read_data(csv_file,db):
     """
     with open(csv_file, encoding='utf8') as csvfile:
         # прочитать файл с данными и записать в коллекцию
-        reader = csv.DictReader(csvfile)
-
+        csv_reader = csv.DictReader(csvfile)
+        artists_list = list(csv_reader)
         uniq_id = 0
         list_for_db = []
-        for artist in reader:
+        for artist in artists_list:
             uniq_id += 1
             artist_info = {'_id': uniq_id,
                            'Исполнитель': artist['Исполнитель'],
-                           'Цена': artist['Цена'],
+                           'Цена': int(artist['Цена']),
                            'Место': artist['Место'],
                            'Дата': dt.datetime.strptime('2020 ' + artist['Дата'], '%Y %d.%m')}
 
@@ -71,5 +71,5 @@ if __name__ == '__main__':
     artists_collection = netology_db['artists']
     read_data('artists.csv', artists_collection)
     find_cheapest(artists_collection)
-    find_by_name('Вася', artists_collection)
+    find_by_name('Lil Jon', artists_collection)
     find_by_date(artists_collection)
